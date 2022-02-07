@@ -1,0 +1,10 @@
+{
+  "release": {
+    "branches": [
+      "master",
+      "next",
+      { "name": "beta", "prerelease": true },
+      { "name": "dev", "prerelease": true }
+    ]
+  }
+}

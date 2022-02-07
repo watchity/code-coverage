@@ -35,7 +35,6 @@ jobs:
       CI_PULL_REQUEST: ''
     steps:
       - checkout
-      - run: npm ci
       - run: npm run semantic-release
 
   cyrun:
