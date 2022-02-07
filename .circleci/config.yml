@@ -148,6 +148,7 @@ workflows:
           command: npx cypress run --project examples/old-cypress-config/all-files
           # store screenshots and videos
           store_artifacts: true
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package-lock.json" }}'
           post-checkout:
             - run:
                 name: Install node 16
