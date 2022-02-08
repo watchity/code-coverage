@@ -34,7 +34,8 @@ jobs:
       CIRCLE_PULL_REQUEST: ''
       CI_PULL_REQUEST: ''
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/
       - run: npm run semantic-release
 
   cyrun:
