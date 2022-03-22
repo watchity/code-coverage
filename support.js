@@ -14,11 +14,11 @@ dayjs.extend(duration)
 const sendCoverage = (coverage, pathname = '/') => {
   logMessage(`Saving code coverage for **${pathname}**`)
 
-  const withoutSpecs = filterSpecsFromCoverage(coverage)
-  const appCoverageOnly = filterSupportFilesFromCoverage(withoutSpecs)
+  // const withoutSpecs = filterSpecsFromCoverage(coverage)
+  // const appCoverageOnly = filterSupportFilesFromCoverage(withoutSpecs)
 
   // stringify coverage object for speed
-  cy.task('combineCoverage', JSON.stringify(appCoverageOnly), {
+  cy.task('combineCoverage', JSON.stringify(coverage), {
     log: false
   })
 }
