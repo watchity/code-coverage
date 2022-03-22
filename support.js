@@ -180,7 +180,7 @@ const registerHooks = () => {
       )
       cy.request({
         url,
-        log: false,
+        log: true,
         failOnStatusCode: false
       })
         .then((r) => {
@@ -230,8 +230,8 @@ const registerHooks = () => {
       message: ['Generating report [@cypress/code-coverage]']
     })
     cy.task('coverageReport', null, {
-      timeout: dayjs.duration(3, 'minutes').asMilliseconds(),
-      log: false
+      timeout: dayjs.duration(5, 'minutes').asMilliseconds(),
+      log: true
     }).then((coverageReportFolder) => {
       logInstance.set('consoleProps', () => ({
         'coverage report folder': coverageReportFolder

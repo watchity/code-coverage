@@ -84,29 +84,29 @@ function maybePrintFinalCoverageFiles(folder) {
     jsonReportFilename
   )
 
-  finalCoverageKeys.forEach((key) => {
-    const s = finalCoverage[key].s || {}
-    const statements = Object.keys(s)
-    const totalStatements = statements.length
-    let coveredStatements = 0
-    statements.forEach((statementKey) => {
-      if (s[statementKey]) {
-        coveredStatements += 1
-      }
-    })
+  // finalCoverageKeys.forEach((key) => {
+  //   const s = finalCoverage[key].s || {}
+  //   const statements = Object.keys(s)
+  //   const totalStatements = statements.length
+  //   let coveredStatements = 0
+  //   statements.forEach((statementKey) => {
+  //     if (s[statementKey]) {
+  //       coveredStatements += 1
+  //     }
+  //   })
 
-    const hasStatements = totalStatements > 0
-    const allCovered = coveredStatements === totalStatements
-    const coverageStatus = hasStatements ? (allCovered ? '✅' : '⚠️') : '❓'
+  //   const hasStatements = totalStatements > 0
+  //   const allCovered = coveredStatements === totalStatements
+  //   const coverageStatus = hasStatements ? (allCovered ? '✅' : '⚠️') : '❓'
 
-    // debug(
-    //   '%s %s statements covered %d/%d',
-    //   coverageStatus,
-    //   key,
-    //   coveredStatements,
-    //   totalStatements
-    // )
-  })
+  //   debug(
+  //     '%s %s statements covered %d/%d',
+  //     coverageStatus,
+  //     key,
+  //     coveredStatements,
+  //     totalStatements
+  //   )
+  // })
 }
 
 const tasks = {
