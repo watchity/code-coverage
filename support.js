@@ -20,7 +20,7 @@ const sendCoverage = (coverage, pathname = '/') => {
   // stringify coverage object for speed
   cy.task('combineCoverage', JSON.stringify(coverage), {
     log: true,
-    timeout: dayjs.duration(5, 'minutes').asMilliseconds(),
+    timeout: 300000,
   })
 }
 
@@ -86,7 +86,7 @@ const registerHooks = () => {
       {
         // @ts-ignore
         isInteractive: Cypress.config('isInteractive'),
-        timeout: dayjs.duration(5, 'minutes').asMilliseconds(),
+        timeout: 300000,
       },
       { log: true }
     ).then(() => {
@@ -232,7 +232,7 @@ const registerHooks = () => {
       message: ['Generating report [@cypress/code-coverage]']
     })
     cy.task('coverageReport', null, {
-      timeout: dayjs.duration(5, 'minutes').asMilliseconds(),
+      timeout: 300000,
       log: true
     }).then((coverageReportFolder) => {
       logInstance.set('consoleProps', () => ({
