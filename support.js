@@ -19,7 +19,7 @@ const sendCoverage = (coverage, pathname = '/') => {
 
   // stringify coverage object for speed
   cy.task('combineCoverage', JSON.stringify(coverage), {
-    log: true,
+    log: false,
     timeout: 300000,
   })
 }
@@ -88,7 +88,7 @@ const registerHooks = () => {
         isInteractive: Cypress.config('isInteractive'),
         timeout: 300000,
       },
-      { log: true }
+      { log: false }
     ).then(() => {
       logInstance.end()
     })
@@ -126,7 +126,7 @@ const registerHooks = () => {
     cy.on('window:load', saveCoverageObject)
 
     // save reference if visiting a page inside a before() hook
-    cy.window({ log: true }).then(saveCoverageObject)
+    cy.window({ log: false }).then(saveCoverageObject)
   })
 
   afterEach(() => {
@@ -182,7 +182,7 @@ const registerHooks = () => {
       )
       cy.request({
         url,
-        log: true,
+        log: false,
         failOnStatusCode: false
       })
         .then((r) => {
@@ -233,7 +233,7 @@ const registerHooks = () => {
     })
     cy.task('coverageReport', null, {
       timeout: 300000,
-      log: true
+      log: false 
     }).then((coverageReportFolder) => {
       logInstance.set('consoleProps', () => ({
         'coverage report folder': coverageReportFolder
