@@ -19,7 +19,7 @@ const sendCoverage = (coverage, pathname = '/') => {
 
   // stringify coverage object for speed
   cy.task('combineCoverage', JSON.stringify(coverage), {
-    log: false
+    log: true
   })
 }
 
