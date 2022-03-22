@@ -19,7 +19,8 @@ const sendCoverage = (coverage, pathname = '/') => {
 
   // stringify coverage object for speed
   cy.task('combineCoverage', JSON.stringify(coverage), {
-    log: true
+    log: true,
+    timeout: dayjs.duration(5, 'minutes').asMilliseconds(),
   })
 }
 
@@ -84,9 +85,10 @@ const registerHooks = () => {
       'resetCoverage',
       {
         // @ts-ignore
-        isInteractive: Cypress.config('isInteractive')
+        isInteractive: Cypress.config('isInteractive'),
+        timeout: dayjs.duration(5, 'minutes').asMilliseconds(),
       },
-      { log: false }
+      { log: true }
     ).then(() => {
       logInstance.end()
     })
@@ -124,7 +126,7 @@ const registerHooks = () => {
     cy.on('window:load', saveCoverageObject)
 
     // save reference if visiting a page inside a before() hook
-    cy.window({ log: false }).then(saveCoverageObject)
+    cy.window({ log: true }).then(saveCoverageObject)
   })
 
   afterEach(() => {
