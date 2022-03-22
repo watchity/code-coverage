@@ -99,13 +99,13 @@ function maybePrintFinalCoverageFiles(folder) {
     const allCovered = coveredStatements === totalStatements
     const coverageStatus = hasStatements ? (allCovered ? '✅' : '⚠️') : '❓'
 
-    debug(
-      '%s %s statements covered %d/%d',
-      coverageStatus,
-      key,
-      coveredStatements,
-      totalStatements
-    )
+    // debug(
+    //   '%s %s statements covered %d/%d',
+    //   coverageStatus,
+    //   key,
+    //   coveredStatements,
+    //   totalStatements
+    // )
   })
 }
 
