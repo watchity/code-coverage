@@ -60,12 +60,18 @@ const nycReportOptions = (function getNycOption() {
 const nycFilename = join(nycReportOptions['temp-dir'], 'out.json')
 
 function saveCoverage(coverage) {
+  console.log('qrqrqr aaa');
   if (!existsSync(nycReportOptions.tempDir)) {
+    console.log('qrqrqr bbb');
     mkdirSync(nycReportOptions.tempDir, { recursive: true })
+    console.log('qrqrqr ccc');
     debug('created folder %s for output coverage', nycReportOptions.tempDir)
+    console.log('qrqrqr ddd');
   }
 
+  console.log('qrqrqr eee');
   writeFileSync(nycFilename, JSON.stringify(coverage, null, 2))
+  console.log('qrqrqr fff');
 }
 
 function maybePrintFinalCoverageFiles(folder) {
@@ -143,14 +149,19 @@ const tasks = {
    * @returns {null} Nothing is returned from this task
    */
   combineCoverage(sentCoverage) {
+    console.log('qrqrqr1');
     const coverage = JSON.parse(sentCoverage)
+    console.log('qrqrqr2');
     debug('parsed sent coverage')
 
     fixSourcePaths(coverage)
+    console.log('qrqrqr3');
 
     const previousCoverage = existsSync(nycFilename)
       ? JSON.parse(readFileSync(nycFilename, 'utf8'))
       : {}
+
+    console.log('qrqrqr4');
 
     // previous code coverage object might have placeholder entries
     // for files that we have not seen yet,
@@ -159,9 +170,14 @@ const tasks = {
     // and re-insert them again when creating the report
     removePlaceholders(previousCoverage)
 
+    console.log('qrqrqr5');
+
     const coverageMap = istanbul.createCoverageMap(previousCoverage)
+    console.log('qrqrqr6');
     coverageMap.merge(coverage)
+    console.log('qrqrqr7');
     saveCoverage(coverageMap)
+    console.log('qrqrqr8');
     debug('wrote coverage file %s', nycFilename)
 
     return null
