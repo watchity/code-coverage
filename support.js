@@ -20,7 +20,7 @@ const sendCoverage = (coverage, pathname = '/') => {
   // stringify coverage object for speed
   cy.task('combineCoverage', JSON.stringify(coverage), {
     log: false,
-    timeout: 900000,
+    timeout: 900000
   })
 }
 
@@ -29,7 +29,7 @@ const sendCoverage = (coverage, pathname = '/') => {
  * so the user knows the log message is coming from this plugin.
  * @param {string} s Message to log.
  */
-const logMessage = (s) => {
+const logMessage = s => {
   cy.log(`${s} \`[@cypress/code-coverage]\``)
 }
 
@@ -37,7 +37,7 @@ const logMessage = (s) => {
  * Removes support file from the coverage object.
  * If there are more files loaded from support folder, also removes them
  */
-const filterSupportFilesFromCoverage = (totalCoverage) => {
+const filterSupportFilesFromCoverage = totalCoverage => {
   const integrationFolder = Cypress.config('integrationFolder')
   const supportFile = Cypress.config('supportFile')
 
@@ -45,7 +45,7 @@ const filterSupportFilesFromCoverage = (totalCoverage) => {
   // @ts-ignore
   const supportFolder = Cypress.config('supportFolder')
 
-  const isSupportFile = (filename) => filename === supportFile
+  const isSupportFile = filename => filename === supportFile
 
   let coverage = Cypress._.omitBy(totalCoverage, (fileCoverage, filename) =>
     isSupportFile(filename)
@@ -86,7 +86,7 @@ const registerHooks = () => {
       {
         // @ts-ignore
         isInteractive: Cypress.config('isInteractive'),
-        timeout: 900000,
+        timeout: 900000
       },
       { log: false }
     ).then(() => {
@@ -99,7 +99,7 @@ const registerHooks = () => {
     // to let the user know the coverage has been collected
     windowCoverageObjects = []
 
-    const saveCoverageObject = (win) => {
+    const saveCoverageObject = win => {
       // if application code has been instrumented, the app iframe "window" has an object
       const applicationSourceCoverage = win.__coverage__
       if (!applicationSourceCoverage) {
@@ -132,26 +132,37 @@ const registerHooks = () => {
   afterEach(() => {
     // save coverage after the test
     // because now the window coverage objects have been updated
-    windowCoverageObjects.forEach((cover) => {
+    console.log('qrqrqr xxx1')
+    windowCoverageObjects.forEach(cover => {
+      console.log('qrqrqr xxx2')
       sendCoverage(cover.coverage, cover.pathname)
+      console.log('qrqrqr xxx3')
     })
 
+    console.log('qrqrqr xxx4')
     if (!hasE2ECoverage()) {
+      console.log('qrqrqr xxx5')
       if (hasUnitTestCoverage()) {
+        console.log('qrqrqr xxx6')
         logMessage(`👉 Only found unit test code coverage.`)
+        console.log('qrqrqr xxx7')
       } else {
+        console.log('qrqrqr xxx8')
         const expectBackendCoverageOnly = Cypress._.get(
           Cypress.env('codeCoverage'),
           'expectBackendCoverageOnly',
           false
         )
+        console.log('qrqrqr xxx9')
         if (!expectBackendCoverageOnly) {
+          console.log('qrqrqr xxx10')
           logMessage(`
             ⚠️ Could not find any coverage information in your application
             by looking at the window coverage object.
             Did you forget to instrument your application?
             See [code-coverage#instrument-your-application](https://github.com/cypress-io/code-coverage#instrument-your-application)
           `)
+          console.log('qrqrqr xxx11')
         }
       }
     }
@@ -165,13 +176,19 @@ const registerHooks = () => {
     // there might be server-side code coverage information
     // we should grab it once after all tests finish
     // @ts-ignore
+    console.log('qrqrqr yyy1')
     const baseUrl = Cypress.config('baseUrl') || cy.state('window').origin
+    console.log('qrqrqr yyy2')
     // @ts-ignore
     const runningEndToEndTests = baseUrl !== Cypress.config('proxyUrl')
+    console.log('qrqrqr yyy3')
     const specType = Cypress._.get(Cypress.spec, 'specType', 'integration')
+    console.log('qrqrqr yyy4')
     const isIntegrationSpec = specType === 'integration'
+    console.log('qrqrqr yyy5')
 
     if (runningEndToEndTests && isIntegrationSpec) {
+      console.log('qrqrqr yyy6')
       // we can only request server-side code coverage
       // if we are running end-to-end tests,
       // otherwise where do we send the request?
@@ -180,38 +197,48 @@ const registerHooks = () => {
         'url',
         '/__coverage__'
       )
+      console.log('qrqrqr yyy7')
       cy.request({
         url,
         log: false,
         failOnStatusCode: false
       })
-        .then((r) => {
+        .then(r => {
+          console.log('qrqrqr yyy8')
           return Cypress._.get(r, 'body.coverage', null)
         })
-        .then((coverage) => {
+        .then(coverage => {
+          console.log('qrqrqr yyy9')
           if (!coverage) {
             // we did not get code coverage - this is the
             // original failed request
+            console.log('qrqrqr yyy10')
             const expectBackendCoverageOnly = Cypress._.get(
               Cypress.env('codeCoverage'),
               'expectBackendCoverageOnly',
               false
             )
+            console.log('qrqrqr yyy11')
             if (expectBackendCoverageOnly) {
+              console.log('qrqrqr yyy12')
               throw new Error(
                 `Expected to collect backend code coverage from ${url}`
               )
             } else {
+              console.log('qrqrqr yyy13')
               // we did not really expect to collect the backend code coverage
               return
             }
           }
+          console.log('qrqrqr yyy14')
           sendCoverage(coverage, 'backend')
+          console.log('qrqrqr yyy15')
         })
     }
   })
 
   after(function mergeUnitTestCoverage() {
+    console.log('qrqrqr zzz1')
     // collect and merge frontend coverage
 
     // if spec bundle has been instrumented (using Cypress preprocessor)
@@ -220,26 +247,35 @@ const registerHooks = () => {
     // the coverage information only once after all tests have finished
     // @ts-ignore
     const unitTestCoverage = window.__coverage__
+    console.log('qrqrqr zzz2')
     if (unitTestCoverage) {
+      console.log('qrqrqr zzz3')
       sendCoverage(unitTestCoverage, 'unit')
+      console.log('qrqrqr zzz4')
     }
   })
 
   after(function generateReport() {
+    console.log('qrqrqr ooo1')
     // when all tests finish, lets generate the coverage report
     const logInstance = Cypress.log({
       name: 'Coverage',
       message: ['Generating report [@cypress/code-coverage]']
     })
+    console.log('qrqrqr ooo2')
     cy.task('coverageReport', null, {
       timeout: 900000,
-      log: false 
-    }).then((coverageReportFolder) => {
+      log: false
+    }).then(coverageReportFolder => {
+      console.log('qrqrqr ooo3')
       logInstance.set('consoleProps', () => ({
         'coverage report folder': coverageReportFolder
       }))
+      console.log('qrqrqr ooo4')
       logInstance.end()
+      console.log('qrqrqr ooo5')
       return coverageReportFolder
+      console.log('qrqrqr ooo6')
     })
   })
 }
