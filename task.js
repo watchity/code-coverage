@@ -149,19 +149,19 @@ const tasks = {
    * @returns {null} Nothing is returned from this task
    */
   combineCoverage(sentCoverage) {
-    console.log('qrqrqr1');
+    console.log('qrqrqr1', new Date().toISOString());
     const coverage = JSON.parse(sentCoverage)
-    console.log('qrqrqr2');
-    debug('parsed sent coverage')
+    console.log('qrqrqr2', new Date().toISOString());
+    debug('parsed sent coverage', new Date().toISOString())
 
     fixSourcePaths(coverage)
-    console.log('qrqrqr3');
+    console.log('qrqrqr3', new Date().toISOString());
 
     const previousCoverage = existsSync(nycFilename)
       ? JSON.parse(readFileSync(nycFilename, 'utf8'))
       : {}
 
-    console.log('qrqrqr4');
+    console.log('qrqrqr4', new Date().toISOString());
 
     // previous code coverage object might have placeholder entries
     // for files that we have not seen yet,
@@ -170,14 +170,14 @@ const tasks = {
     // and re-insert them again when creating the report
     removePlaceholders(previousCoverage)
 
-    console.log('qrqrqr5');
+    console.log('qrqrqr5', new Date().toISOString());
 
     const coverageMap = istanbul.createCoverageMap(previousCoverage)
-    console.log('qrqrqr6');
+    console.log('qrqrqr6', new Date().toISOString());
     coverageMap.merge(coverage)
-    console.log('qrqrqr7');
+    console.log('qrqrqr7', new Date().toISOString());
     saveCoverage(coverageMap)
-    console.log('qrqrqr8');
+    console.log('qrqrqr8', new Date().toISOString());
     debug('wrote coverage file %s', nycFilename)
 
     return null
@@ -188,54 +188,78 @@ const tasks = {
    * NPM script to generate HTML report
    */
   coverageReport() {
+    console.log('qrqrqrA', new Date().toISOString());
     if (!existsSync(nycFilename)) {
       console.warn('Cannot find coverage file %s', nycFilename)
       console.warn('Skipping coverage report')
       return null
     }
 
+    console.log('qrqrqrB', new Date().toISOString());
     showNycInfo(nycFilename)
 
+    console.log('qrqrqrC', new Date().toISOString());
     const allSourceFilesMissing = checkAllPathsNotFound(nycFilename)
+    console.log('qrqrqrD', new Date().toISOString());
     if (allSourceFilesMissing) {
+      console.log('qrqrqrE', new Date().toISOString());
       tryFindingLocalFiles(nycFilename)
     }
 
+    console.log('qrqrqrF', new Date().toISOString());
     resolveRelativePaths(nycFilename)
 
+    console.log('qrqrqrG', new Date().toISOString());
     if (customNycReportScript) {
+      console.log('qrqrqrH', new Date().toISOString());
       debug(
         'saving coverage report using script "%s" from package.json, command: %s',
         DEFAULT_CUSTOM_COVERAGE_SCRIPT_NAME,
         customNycReportScript
       )
+      console.log('qrqrqrI', new Date().toISOString());
       debug('current working directory is %s', process.cwd())
+      console.log('qrqrqrJ', new Date().toISOString());
       return execa('npm', ['run', DEFAULT_CUSTOM_COVERAGE_SCRIPT_NAME], {
         stdio: 'inherit'
       })
     }
 
+    console.log('qrqrqrK', new Date().toISOString());
     if (nycReportOptions.all) {
+      console.log('qrqrqrL', new Date().toISOString());
       debug('nyc needs to report on all included files')
+      console.log('qrqrqrM', new Date().toISOString());
       includeAllFiles(nycFilename, nycReportOptions)
+      console.log('qrqrqrN', new Date().toISOString());
     }
 
+    console.log('qrqrqrO', new Date().toISOString());
     debug('calling NYC reporter with options %o', nycReportOptions)
+    console.log('qrqrqrP', new Date().toISOString());
     debug('current working directory is %s', process.cwd())
+    console.log('qrqrqrQ', new Date().toISOString());
     const NYC = require('nyc')
+    console.log('qrqrqrR', new Date().toISOString());
     const nyc = new NYC(nycReportOptions)
 
+    console.log('qrqrqrS', new Date().toISOString());
     const returnReportFolder = () => {
+      console.log('qrqrqrT', new Date().toISOString());
       const reportFolder = nycReportOptions['report-dir']
+      console.log('qrqrqrU', new Date().toISOString());
       debug(
         'after reporting, returning the report folder name %s',
         reportFolder
       )
 
+      console.log('qrqrqrV', new Date().toISOString());
       maybePrintFinalCoverageFiles(reportFolder)
 
+      console.log('qrqrqrW', new Date().toISOString());
       return reportFolder
     }
+    console.log('qrqrqrX', new Date().toISOString());
     return nyc.report().then(returnReportFolder)
   }
 }

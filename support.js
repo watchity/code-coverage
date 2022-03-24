@@ -20,7 +20,7 @@ const sendCoverage = (coverage, pathname = '/') => {
   // stringify coverage object for speed
   cy.task('combineCoverage', JSON.stringify(coverage), {
     log: false,
-    timeout: 900000
+    timeout: 1200000
   })
 }
 
@@ -86,7 +86,7 @@ const registerHooks = () => {
       {
         // @ts-ignore
         isInteractive: Cypress.config('isInteractive'),
-        timeout: 900000
+        timeout: 1200000
       },
       { log: false }
     ).then(() => {
@@ -132,37 +132,37 @@ const registerHooks = () => {
   afterEach(() => {
     // save coverage after the test
     // because now the window coverage objects have been updated
-    console.log('qrqrqr xxx1')
+    console.log('qrqrqr xxx1', new Date().toISOString())
     windowCoverageObjects.forEach(cover => {
-      console.log('qrqrqr xxx2')
+      console.log('qrqrqr xxx2', new Date().toISOString())
       sendCoverage(cover.coverage, cover.pathname)
-      console.log('qrqrqr xxx3')
+      console.log('qrqrqr xxx3', new Date().toISOString())
     })
 
-    console.log('qrqrqr xxx4')
+    console.log('qrqrqr xxx4', new Date().toISOString())
     if (!hasE2ECoverage()) {
-      console.log('qrqrqr xxx5')
+      console.log('qrqrqr xxx5', new Date().toISOString())
       if (hasUnitTestCoverage()) {
-        console.log('qrqrqr xxx6')
+        console.log('qrqrqr xxx6', new Date().toISOString())
         logMessage(`👉 Only found unit test code coverage.`)
-        console.log('qrqrqr xxx7')
+        console.log('qrqrqr xxx7', new Date().toISOString())
       } else {
-        console.log('qrqrqr xxx8')
+        console.log('qrqrqr xxx8', new Date().toISOString())
         const expectBackendCoverageOnly = Cypress._.get(
           Cypress.env('codeCoverage'),
           'expectBackendCoverageOnly',
           false
         )
-        console.log('qrqrqr xxx9')
+        console.log('qrqrqr xxx9', new Date().toISOString())
         if (!expectBackendCoverageOnly) {
-          console.log('qrqrqr xxx10')
+          console.log('qrqrqr xxx10', new Date().toISOString())
           logMessage(`
             ⚠️ Could not find any coverage information in your application
             by looking at the window coverage object.
             Did you forget to instrument your application?
             See [code-coverage#instrument-your-application](https://github.com/cypress-io/code-coverage#instrument-your-application)
           `)
-          console.log('qrqrqr xxx11')
+          console.log('qrqrqr xxx11', new Date().toISOString())
         }
       }
     }
@@ -176,19 +176,19 @@ const registerHooks = () => {
     // there might be server-side code coverage information
     // we should grab it once after all tests finish
     // @ts-ignore
-    console.log('qrqrqr yyy1')
+    console.log('qrqrqr yyy1', new Date().toISOString())
     const baseUrl = Cypress.config('baseUrl') || cy.state('window').origin
-    console.log('qrqrqr yyy2')
+    console.log('qrqrqr yyy2', new Date().toISOString())
     // @ts-ignore
     const runningEndToEndTests = baseUrl !== Cypress.config('proxyUrl')
-    console.log('qrqrqr yyy3')
+    console.log('qrqrqr yyy3', new Date().toISOString())
     const specType = Cypress._.get(Cypress.spec, 'specType', 'integration')
-    console.log('qrqrqr yyy4')
+    console.log('qrqrqr yyy4', new Date().toISOString())
     const isIntegrationSpec = specType === 'integration'
-    console.log('qrqrqr yyy5')
+    console.log('qrqrqr yyy5', new Date().toISOString())
 
     if (runningEndToEndTests && isIntegrationSpec) {
-      console.log('qrqrqr yyy6')
+      console.log('qrqrqr yyy6', new Date().toISOString())
       // we can only request server-side code coverage
       // if we are running end-to-end tests,
       // otherwise where do we send the request?
@@ -197,48 +197,48 @@ const registerHooks = () => {
         'url',
         '/__coverage__'
       )
-      console.log('qrqrqr yyy7')
+      console.log('qrqrqr yyy7', new Date().toISOString())
       cy.request({
         url,
         log: false,
         failOnStatusCode: false
       })
         .then(r => {
-          console.log('qrqrqr yyy8')
+          console.log('qrqrqr yyy8', new Date().toISOString())
           return Cypress._.get(r, 'body.coverage', null)
         })
         .then(coverage => {
-          console.log('qrqrqr yyy9')
+          console.log('qrqrqr yyy9', new Date().toISOString())
           if (!coverage) {
             // we did not get code coverage - this is the
             // original failed request
-            console.log('qrqrqr yyy10')
+            console.log('qrqrqr yyy10', new Date().toISOString())
             const expectBackendCoverageOnly = Cypress._.get(
               Cypress.env('codeCoverage'),
               'expectBackendCoverageOnly',
               false
             )
-            console.log('qrqrqr yyy11')
+            console.log('qrqrqr yyy11', new Date().toISOString())
             if (expectBackendCoverageOnly) {
-              console.log('qrqrqr yyy12')
+              console.log('qrqrqr yyy12', new Date().toISOString())
               throw new Error(
                 `Expected to collect backend code coverage from ${url}`
               )
             } else {
-              console.log('qrqrqr yyy13')
+              console.log('qrqrqr yyy13', new Date().toISOString())
               // we did not really expect to collect the backend code coverage
               return
             }
           }
-          console.log('qrqrqr yyy14')
+          console.log('qrqrqr yyy14', new Date().toISOString())
           sendCoverage(coverage, 'backend')
-          console.log('qrqrqr yyy15')
+          console.log('qrqrqr yyy15', new Date().toISOString())
         })
     }
   })
 
   after(function mergeUnitTestCoverage() {
-    console.log('qrqrqr zzz1')
+    console.log('qrqrqr zzz1', new Date().toISOString())
     // collect and merge frontend coverage
 
     // if spec bundle has been instrumented (using Cypress preprocessor)
@@ -247,35 +247,34 @@ const registerHooks = () => {
     // the coverage information only once after all tests have finished
     // @ts-ignore
     const unitTestCoverage = window.__coverage__
-    console.log('qrqrqr zzz2')
+    console.log('qrqrqr zzz2', new Date().toISOString())
     if (unitTestCoverage) {
-      console.log('qrqrqr zzz3')
+      console.log('qrqrqr zzz3', new Date().toISOString())
       sendCoverage(unitTestCoverage, 'unit')
-      console.log('qrqrqr zzz4')
+      console.log('qrqrqr zzz4', new Date().toISOString())
     }
   })
 
   after(function generateReport() {
-    console.log('qrqrqr ooo1')
+    console.log('qrqrqr ooo1', new Date().toISOString())
     // when all tests finish, lets generate the coverage report
     const logInstance = Cypress.log({
       name: 'Coverage',
       message: ['Generating report [@cypress/code-coverage]']
     })
-    console.log('qrqrqr ooo2')
+    console.log('qrqrqr ooo2', new Date().toISOString())
     cy.task('coverageReport', null, {
-      timeout: 900000,
+      timeout: 1200000,
       log: false
     }).then(coverageReportFolder => {
-      console.log('qrqrqr ooo3')
+      console.log('qrqrqr ooo3', new Date().toISOString())
       logInstance.set('consoleProps', () => ({
         'coverage report folder': coverageReportFolder
       }))
-      console.log('qrqrqr ooo4')
+      console.log('qrqrqr ooo4', new Date().toISOString())
       logInstance.end()
-      console.log('qrqrqr ooo5')
+      console.log('qrqrqr ooo5', new Date().toISOString())
       return coverageReportFolder
-      console.log('qrqrqr ooo6')
     })
   })
 }
